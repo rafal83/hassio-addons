@@ -1,6 +1,6 @@
 {
   "name": "snmp-ups-sim",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simulated APC UPS with SNMP and MQTT integration",
   "main": "snmp-agent.js",
   "scripts": {
