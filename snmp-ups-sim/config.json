@@ -1,9 +1,10 @@
 {
   "name": "SNMP UPS Simulator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "slug": "snmp_ups_sim",
   "description": "Simulated APC UPS agent with MQTT integration",
   "image": "rafal83/snmp-ups-sim",
+  "icon": "icon.png",
   "startup": "application",
   "boot": "auto",
   "homeassistant": "2021.12.0",
