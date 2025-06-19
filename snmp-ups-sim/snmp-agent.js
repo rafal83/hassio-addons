@@ -5,10 +5,19 @@ const fs = require("fs");
 const mqtt = require("mqtt");
 
 const broker = (process.env.MQTT_BROKER || "localhost")
-const mqttClient = mqtt.connect("mqtt://" + broker, {
+const port = (process.env.MQTT_PORT || 1883)
+const mqttClient = mqtt.connect(`mqtt://${broker}:${port}` , {
   username: process.env.MQTT_USERNAME,
   password: process.env.MQTT_PASSWORD
 });
+
+mqttClient.on('error', (error) => {
+  console.error('🔗 MQTT connection failed', error)
+})
+
+mqttClient.on('reconnect', (error) => {
+  console.error('🔗 MQTT reconnect failed', error)
+})
 
 mqttClient.on("connect", () => {
   console.log("🔗 MQTT connecté", broker);
