@@ -4,13 +4,14 @@ const snmp = require("net-snmp");
 const fs = require("fs");
 const mqtt = require("mqtt");
 
-const mqttClient = mqtt.connect("mqtt://" + (process.env.MQTT_BROKER || "localhost"), {
+const broker = (process.env.MQTT_BROKER || "localhost")
+const mqttClient = mqtt.connect("mqtt://" + broker, {
   username: process.env.MQTT_USERNAME,
   password: process.env.MQTT_PASSWORD
 });
 
 mqttClient.on("connect", () => {
-  console.log("🔗 MQTT connecté");
+  console.log("🔗 MQTT connecté", broker);
   mqttClient.subscribe("ups/#");
 });
 
