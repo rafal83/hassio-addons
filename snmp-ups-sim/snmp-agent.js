@@ -20,6 +20,7 @@ mqttClient.on("message", (topic, message) => {
   const floatVal = parseFloat(payload);
   if (isNaN(floatVal)) return;
 
+  console.log("MQTT Message", topic, message)
   switch (topic) {
     case "ups/voltage":
       mib.setScalarValue("upsInputVoltage", Math.round(floatVal));
@@ -58,7 +59,9 @@ const agent = snmp.createAgent({
     return;
   }
   //console.log(data.pdu.varbinds);
-  console.log("SNMP request received:", JSON.stringify(data.pdu.varbinds, null, 2));
+  data.pdu.varbinds.forEach(v => {
+    console.log("SNMP request received:", v.providerName, v.oid, v.value)
+  })
 });
 
 const authorizer = agent.getAuthorizer();
