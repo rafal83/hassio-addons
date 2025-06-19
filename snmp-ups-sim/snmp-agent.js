@@ -29,7 +29,7 @@ mqttClient.on("message", (topic, message) => {
   const floatVal = parseFloat(payload);
   if (isNaN(floatVal)) return;
 
-  console.log("MQTT Message", topic, message)
+  console.log("MQTT Message", topic, payload)
   switch (topic) {
     case "ups/voltage":
       mib.setScalarValue("upsInputVoltage", Math.round(floatVal));
