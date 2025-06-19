@@ -4,7 +4,7 @@ const snmp = require("net-snmp");
 const fs = require("fs");
 const mqtt = require("mqtt");
 
-const mqttClient = mqtt.connect(process.env.MQTT_BROKER || "mqtt://localhost", {
+const mqttClient = mqtt.connect("mqtt://" + (process.env.MQTT_BROKER || "localhost"), {
   username: process.env.MQTT_USERNAME,
   password: process.env.MQTT_PASSWORD
 });

@@ -14,7 +14,7 @@
   },
   "privileged": [],
   "options": {
-    "mqtt_broker": "mqtt://localhost",
+    "mqtt_broker": "localhost",
     "mqtt_username": "",
     "mqtt_password": ""
   },
