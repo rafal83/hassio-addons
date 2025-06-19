@@ -1,0 +1,18 @@
+FROM node:22-slim
+
+WORKDIR /app
+
+# Utiliser bashio pour lire les options
+RUN apt-get update && apt-get install -y bash curl jq && \
+    curl -sSL -o /usr/bin/bashio https://github.com/hassio-addons/bashio/raw/main/bashio && \
+    chmod +x /usr/bin/bashio
+
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+COPY index.js .
+COPY run.sh .
+
+EXPOSE 161/udp
+
+CMD [ "/bin/bash", "run.sh" ]
