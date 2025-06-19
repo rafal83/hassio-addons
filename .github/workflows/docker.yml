@@ -1,3 +1,10 @@
+name: Build and push SNMP UPS Docker image
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
