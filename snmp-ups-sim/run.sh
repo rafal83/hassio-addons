@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# ⬅️ Sourcer bashio (important)
-source /usr/bin/bashio
+source /usr/lib/bashio/bashio.sh
 
 export MQTT_BROKER="$(bashio::config 'mqtt_broker')"
 export MQTT_USERNAME="$(bashio::config 'mqtt_username')"
