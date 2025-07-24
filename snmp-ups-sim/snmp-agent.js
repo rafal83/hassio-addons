@@ -42,6 +42,7 @@ mqttClient.on("message", (topic, message) => {
     case "ups/percent":
       mib.setScalarValue("upsEstimatedChargeRemaining", Math.round(floatVal));
       mib.setScalarValue("upsAdvBatteryCapacity", Math.round(floatVal));
+      mib.setScalarValue("upsAlarmLowBattery", Math.round(floatVal) < 10 ? 1 : 2);
       break;
     case "ups/status":
       const status = payload.toUpperCase();
@@ -90,6 +91,19 @@ const apcProviders = [
   type: snmp.MibProviderType.Scalar,
   scalarType: snmp.ObjectType.TimeTicks,
   maxAccess: snmp.MaxAccess["read-only"]
+},
+{
+  name: "upsAlarmLowBattery",
+  oid: "1.3.6.1.2.1.33.1.6.3.3",
+  type: snmp.MibProviderType.Scalar,
+  scalarType: snmp.ObjectType.Integer,
+  maxAccess: snmp.MaxAccess["read-only"],
+  constraints: {
+    enumeration: {
+      1: "true",
+      2: "false"
+    }
+  }
 },
   // UPS-MIB
   {
@@ -158,6 +172,7 @@ mib.setScalarValue("upsIdentModel", "ESP32-UPS");
 mib.setScalarValue("upsBasicOutputStatus", 2); // 2 = onLine
 mib.setScalarValue("upsAdvInputLineFailCause", 1); // 1 = noTransfer
 
+mib.setScalarValue("upsAlarmLowBattery", 2);
 mib.setScalarValue("upsBatteryStatus", 2);
 mib.setScalarValue("upsEstimatedChargeRemaining", 85);
 mib.setScalarValue("upsInputVoltage", 12);
