@@ -40,7 +40,7 @@ mqttClient.on("message", (topic, message) => {
     case "ups/remaining":
       mib.setScalarValue("upsAdvBatteryRunTimeRemaining", Math.round(floatVal));
     case "ups/percent":
-      mib.setScalarValue("upsEstimatedChargeRemaining", Math.round(floatVal));
+      // mib.setScalarValue("upsEstimatedChargeRemaining", Math.round(floatVal));
       mib.setScalarValue("upsAdvBatteryCapacity", Math.round(floatVal));
       mib.setScalarValue("upsAlarmLowBattery", Math.round(floatVal) < 10 ? 1 : 2);
       break;
@@ -54,8 +54,8 @@ mqttClient.on("message", (topic, message) => {
     case "ups/power":
       mib.setScalarValue("upsAdvOutputCurrent", Math.round(floatVal));
       break;
-    default:
-      console.log(`🛈 MQTT non géré : ${topic} => ${payload}`);
+    // default:
+    //   console.log(`🛈 MQTT non géré : ${topic} => ${payload}`);
   }
 });
 
