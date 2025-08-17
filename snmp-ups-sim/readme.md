@@ -7,7 +7,7 @@ Simulates an APC UPS via SNMP and dynamically updates values from MQTT (e.g. ESP
 - `ups/voltage` → updates SNMP input voltage
 - `ups/percent` → updates battery charge %
 - `ups/status` → MAINS / BATTERY → affects SNMP battery status
-- `ups/power` → output current
+- `ups/power` → output power
 - `ups/remaining` → updates remaining runtime (in seconds)
 
 ## Usage
