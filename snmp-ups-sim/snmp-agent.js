@@ -135,7 +135,7 @@ const apcProviders = [
       4: "onBoost",
       5: "onBuck"
     }
-  }current
+  }
 },
 {
   name: "upsAdvInputLineFailCause",
