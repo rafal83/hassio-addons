@@ -36,10 +36,14 @@ mqttClient.on("message", (topic, message) => {
       mib.setScalarValue("upsInputVoltage", Math.round(floatVal));
       mib.setScalarValue("upsAdvInputLineVoltage", Math.round(floatVal));
       break;
-    case "ups/outputvoltage":
+    case "ups/outoutVoltage":
       console.log("MQTT Message", topic, payload)      
       mib.setScalarValue("upsOutputVoltage", Math.round(floatVal));
-      break;      
+      break;
+    case "ups/batteryVoltage":
+      console.log("MQTT Message", topic, payload)      
+      mib.setScalarValue("upsBatteryVoltage", Math.round(floatVal));
+      break;   
     case "ups/batteryTemperature":
       mib.setScalarValue("upsAdvBatteryTemperature", Math.round(floatVal));
       break;
@@ -159,6 +163,7 @@ const apcProviders = [
   { name: "upsEstimatedChargeRemaining", oid: "1.3.6.1.2.1.33.1.2.4", type: snmp.MibProviderType.Scalar, scalarType: snmp.ObjectType.Integer, maxAccess: snmp.MaxAccess["read-only"] },
   { name: "upsInputVoltage", oid: "1.3.6.1.2.1.33.1.3.3.1.3", type: snmp.MibProviderType.Scalar, scalarType: snmp.ObjectType.Integer, maxAccess: snmp.MaxAccess["read-only"] },
   { name: "upsOutputVoltage", oid: "1.3.6.1.2.1.33.1.4.4.1.2", type: snmp.MibProviderType.Scalar, scalarType: snmp.ObjectType.Integer, maxAccess: snmp.MaxAccess["read-only"] },
+  { name: "upsBatteryVoltage", oid: "1.3.6.1.2.1.33.1.2.5", type: snmp.MibProviderType.Scalar, scalarType: snmp.ObjectType.Integer, maxAccess: snmp.MaxAccess["read-only"] },
   { name: "upsOutputPercentLoad", oid: "1.3.6.1.2.1.33.1.4.4.1.5", type: snmp.MibProviderType.Scalar, scalarType: snmp.ObjectType.Integer, maxAccess: snmp.MaxAccess["read-only"] },
 
   // PowerNet-MIB
