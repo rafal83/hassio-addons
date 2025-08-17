@@ -65,9 +65,13 @@ mqttClient.on("message", (topic, message) => {
       mib.setScalarValue("upsBatteryStatus", snmpStatus); // optionnel
       mib.setScalarValue("upsBasicBatteryStatus", snmpStatus);
       break;
-    case "ups/power":
+    case "ups/current":
       console.log("MQTT Message", topic, payload)      
       mib.setScalarValue("upsAdvOutputCurrent", Math.round(floatVal));
+      break;
+    case "ups/power":
+      console.log("MQTT Message", topic, payload)      
+      mib.setScalarValue("upsAdvOutputActivePower", Math.round(floatVal));
       break;
     // default:
     //   console.log(`🛈 MQTT non géré : ${topic} => ${payload}`);
@@ -174,6 +178,7 @@ const apcProviders = [
   { name: "upsAdvBatteryReplaceIndicator", oid: "1.3.6.1.4.1.318.1.1.1.2.2.4", type: snmp.MibProviderType.Scalar, scalarType: snmp.ObjectType.Integer, maxAccess: snmp.MaxAccess["read-only"], constraints: { enumeration: { 1: "noBatteryNeedsReplacing", 2: "batteryNeedsReplacing" } } },
   { name: "upsAdvInputMaxLineVoltage", oid: "1.3.6.1.4.1.318.1.1.1.3.2.2", type: snmp.MibProviderType.Scalar, scalarType: snmp.ObjectType.Integer, maxAccess: snmp.MaxAccess["read-only"] },
   { name: "upsAdvOutputCurrent", oid: "1.3.6.1.4.1.318.1.1.1.4.2.4", type: snmp.MibProviderType.Scalar, scalarType: snmp.ObjectType.Integer, maxAccess: snmp.MaxAccess["read-only"] },
+  { name: "upsAdvOutputActivePower", oid: "1.3.6.1.4.1.318.1.1.1.4.2.8", type: snmp.MibProviderType.Scalar, scalarType: snmp.ObjectType.Integer, maxAccess: snmp.MaxAccess["read-only"] },
   { name: "upsAdvInputLineVoltage", oid: "1.3.6.1.4.1.318.1.1.1.3.2.1", type: snmp.MibProviderType.Scalar, scalarType: snmp.ObjectType.Gauge32, maxAccess: snmp.MaxAccess["read-only"] },
   { name: "upsAdvBatteryTemperature", oid: "1.3.6.1.4.1.318.1.1.1.2.2.2", type: snmp.MibProviderType.Scalar, scalarType: snmp.ObjectType.Integer, maxAccess: snmp.MaxAccess["read-only"] }
 ];
