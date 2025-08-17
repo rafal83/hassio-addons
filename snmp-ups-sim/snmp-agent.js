@@ -29,22 +29,28 @@ mqttClient.on("message", (topic, message) => {
   const floatVal = parseFloat(payload);
   if (isNaN(floatVal)) return;
 
-  console.log("MQTT Message", topic, payload)
+  // console.log("MQTT Message", topic, payload)
   switch (topic) {
     case "ups/voltage":
+      console.log("MQTT Message", topic, payload)      
       mib.setScalarValue("upsInputVoltage", Math.round(floatVal));
       mib.setScalarValue("upsAdvInputLineVoltage", Math.round(floatVal));
       break;
     case "ups/batteryTemperature":
       mib.setScalarValue("upsAdvBatteryTemperature", Math.round(floatVal));
+      break;
     case "ups/remaining":
+      console.log("MQTT Message", topic, payload)      
       mib.setScalarValue("upsAdvBatteryRunTimeRemaining", Math.round(floatVal));
+      break;
     case "ups/percent":
-      // mib.setScalarValue("upsEstimatedChargeRemaining", Math.round(floatVal));
+      console.log("MQTT Message", topic, payload)      
+      mib.setScalarValue("upsEstimatedChargeRemaining", Math.round(floatVal));
       mib.setScalarValue("upsAdvBatteryCapacity", Math.round(floatVal));
       mib.setScalarValue("upsAlarmLowBattery", Math.round(floatVal) < 10 ? 1 : 2);
       break;
     case "ups/status":
+      console.log("MQTT Message", topic, payload)      
       const status = payload.toUpperCase();
       const snmpStatus = status === "MAINS" ? 2 : 3; // 2 = onLine, 3 = onBattery
       mib.setScalarValue("upsBasicOutputStatus", snmpStatus);
@@ -52,6 +58,7 @@ mqttClient.on("message", (topic, message) => {
       mib.setScalarValue("upsBasicBatteryStatus", snmpStatus);
       break;
     case "ups/power":
+      console.log("MQTT Message", topic, payload)      
       mib.setScalarValue("upsAdvOutputCurrent", Math.round(floatVal));
       break;
     // default:
