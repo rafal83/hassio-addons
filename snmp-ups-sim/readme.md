@@ -1,6 +1,6 @@
 # SNMP UPS Simulator
 
-Simulates an APC UPS via SNMP and dynamically updates values from MQTT (e.g. ESPHome). Compatible with standard UPS monitoring tools that expect APC PowerNet-MIB and UPS-MIB OIDs.
+Simulates an APC UPS via SNMP and dynamically updates values from MQTT (e.g. ESPHome). Compatible with standard UPS monitoring tools that expect APC PowerNet-MIB and UPS-MIB OIDs, including **Network UPS Tools (NUT)**.
 
 ## Features
 
@@ -154,6 +154,34 @@ binary_sensor:
 
 ### Home Assistant
 The simulated UPS will be discoverable by Home Assistant's SNMP integration using the container's IP address and standard APC OIDs.
+
+### Network UPS Tools (NUT)
+Configure NUT to monitor the simulated UPS using the SNMP driver:
+
+```ini
+# /etc/nut/ups.conf
+[simulated-ups]
+    driver = snmp-ups
+    port = your-container-ip
+    community = public
+    snmp_version = v2c
+    mibs = powernet
+    desc = "Simulated APC UPS via MQTT"
+```
+
+```ini
+# /etc/nut/upsd.users
+[admin]
+    password = your-password
+    upsmon master
+```
+
+Test with NUT commands:
+```bash
+upsc simulated-ups
+upsc simulated-ups ups.status
+upsc simulated-ups battery.charge
+```
 
 ## Requirements
 
