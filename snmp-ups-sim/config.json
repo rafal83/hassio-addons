@@ -1,6 +1,6 @@
 {
   "name": "SNMP UPS Simulator",
-  "version": "1.0.7",
+  "version": "1.0.12",
   "slug": "snmp_ups_sim",
   "description": "Simulated APC UPS agent with MQTT integration",
   "image": "rafal83/snmp-ups-sim",
