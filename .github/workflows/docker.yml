@@ -38,14 +38,3 @@ jobs:
           tags: |
             rafal83/snmp-ups-sim:latest
             rafal83/snmp-ups-sim:${{ steps.version.outputs.VERSION }}
-
-      - name: Build and push donetick
-        uses: docker/build-push-action@v5
-        with:
-          context: ./donetick
-          file: ./donetick/Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
-          push: true
-          tags: |
-            rafal83/donetick:latest
-            rafal83/donetick:1.1.57
