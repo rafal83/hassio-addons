@@ -1,39 +1,34 @@
-#!/usr/bin/env bashio
+#!/bin/sh
 
-# Verify MQTT service is available
-if ! bashio::services.available mqtt; then
-  bashio::log.warning "MQTT service not available. HA integration will be disabled."
-fi
+export MQTT_HOST="${MQTT_HOST:-}"
+export MQTT_PORT="${MQTT_PORT:-}"
+export MQTT_SSL="${MQTT_SSL:-}"
+export MQTT_USER="${MQTT_USER:-}"
+export MQTT_PASS="${MQTT_PASS:-}"
+export GATEWAY="${GATEWAY:-none}"
+export GATEWAY_HOST="${GATEWAY_HOST:-}"
+export GATEWAY_PORT="${GATEWAY_PORT:-}"
+export GATEWAY_KEY="${GATEWAY_KEY:-}"
+export GATEWAY_USER="${GATEWAY_USER:-}"
+export GATEWAY_PASS="${GATEWAY_PASS:-}"
 
-export MQTT_HOST=$(bashio::services mqtt "host")
-export MQTT_PORT=$(bashio::services mqtt "port")
-export MQTT_SSL=$(bashio::services mqtt "ssl")
-export MQTT_USER=$(bashio::services mqtt "username")
-export MQTT_PASS=$(bashio::services mqtt "password")
-export GATEWAY=$(bashio::config "gateway")
-export GATEWAY_HOST=$(bashio::config "gateway_host")
-export GATEWAY_PORT=$(bashio::config "gateway_port")
-export GATEWAY_KEY=$(bashio::config "gateway_key")
-export GATEWAY_USER=$(bashio::config "gateway_user")
-export GATEWAY_PASS=$(bashio::config "gateway_pass")
-if $(bashio::config.true "ignore_crc"); then
-  echo "IGNORE CRC TRUE"
+if [ "${IGNORE_CRC}" = "true" ]; then
   export TTLOCK_IGNORE_CRC=1
 fi
-if $(bashio::config.equals "gateway" "noble"); then
-  echo "Disable noble auto-binding"
+
+if [ "${GATEWAY}" = "noble" ]; then
   export NOBLE_WEBSOCKET=1
 fi
-if $(bashio::config.true "debug_communication"); then
-  echo "Debug communication ON"
+
+if [ "${DEBUG_COMMUNICATION}" = "true" ]; then
   export TTLOCK_DEBUG_COMM=1
 fi
-if $(bashio::config.true "debug_mqtt"); then
-  echo "Debug MQTT"
+
+if [ "${DEBUG_MQTT}" = "true" ]; then
   export MQTT_DEBUG=1
 fi
-if $(bashio::config.true "gateway_debug"); then
-  echo "Debug gateway"
+
+if [ "${GATEWAY_DEBUG}" = "true" ]; then
   export WEBSOCKET_DEBUG=1
 fi
 

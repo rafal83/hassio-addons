@@ -1,27 +1,14 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
+FROM node:22-alpine
 
 ENV LANG C.UTF-8
 
-# Remove version pins that cause conflicts, then upgrade and install packages
-RUN apk update && \
-    # Remove problematic version pins from world file
-    sed -i '/^musl=/d; /^libcrypto3=/d; /^libssl3=/d' /etc/apk/world && \
-    # Upgrade all packages to latest
-    apk upgrade --no-cache && \
-    # Install dependencies
-    apk add --no-cache \
-        nodejs \
-        npm \
-        python3 \
-        py3-pip \
-        alpine-sdk \
-        libcap \
-        bluez \
-        bluez-dev \
-        eudev-dev && \
-    # Set capabilities for Node.js BLE access
-    setcap cap_net_raw+eip $(eval readlink -f $(which node))
+# Install runtime dependencies + BLE support
+RUN apk add --no-cache \
+    bluez \
+    libcap
+
+# Set capabilities for Node.js BLE access
+RUN setcap cap_net_raw+eip $(eval readlink -f $(which node))
 
 WORKDIR /app
 
@@ -35,5 +22,3 @@ RUN rm -rf /app/node_modules && npm install --omit=dev
 RUN chmod +x /app/start.sh
 
 ENTRYPOINT ["/app/start.sh"]
-
-LABEL io.hass.version="VERSION" io.hass.type="addon" io.hass.arch="amd64|aarch64"
