@@ -1,4 +1,4 @@
-name: Build and push Docker images
+name: Build and push SNMP UPS Docker image
 
 on:
   push:
@@ -8,17 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build and push ${{ matrix.addon.name }}
-
-    strategy:
-      matrix:
-        addon:
-          - name: snmp-ups-sim
-            image: rafal83/snmp-ups-sim
-            platforms: linux/amd64,linux/arm64,linux/arm/v7
-          - name: ttlock-hass-integration
-            image: rafal83/ttlock-hass-integration
-            platforms: linux/amd64,linux/arm64
+    name: Build and push multi-arch Docker image
 
     steps:
       - uses: actions/checkout@v4
@@ -35,16 +25,16 @@ jobs:
       - name: Extract version from config.json
         id: version
         run: |
-          VERSION=$(jq -r .version ${{ matrix.addon.name }}/config.json)
+          VERSION=$(jq -r .version snmp-ups-sim/config.json)
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./${{ matrix.addon.name }}
-          file: ./${{ matrix.addon.name }}/Dockerfile
-          platforms: ${{ matrix.addon.platforms }}
+          context: ./snmp-ups-sim
+          file: ./snmp-ups-sim/Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: |
-            ${{ matrix.addon.image }}:latest
-            ${{ matrix.addon.image }}:${{ steps.version.outputs.VERSION }}
+            rafal83/snmp-ups-sim:latest
+            rafal83/snmp-ups-sim:${{ steps.version.outputs.VERSION }}
