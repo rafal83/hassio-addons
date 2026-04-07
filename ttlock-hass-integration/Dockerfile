@@ -2,8 +2,12 @@ FROM node:22-alpine
 
 ENV LANG C.UTF-8
 
-# Install runtime dependencies + BLE support
-RUN apk add --no-cache \
+# Install build dependencies for native modules (node-gyp) + runtime deps
+RUN apk add --no-cache --virtual .build-deps \
+    python3 \
+    make \
+    g++ && \
+    apk add --no-cache \
     bluez \
     libcap
 
@@ -17,6 +21,9 @@ COPY addon/ /app/
 
 # Install Node.js dependencies (npm install for platforms with native deps)
 RUN rm -rf /app/node_modules && npm install --omit=dev
+
+# Remove build tools not needed at runtime
+RUN apk del .build-deps
 
 # Ensure proper permissions
 RUN chmod +x /app/start.sh
